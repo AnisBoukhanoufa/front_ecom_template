@@ -839,16 +839,19 @@ body {
 .details .container .product div {
     display: flex;
     max-width: 100%;
+    overflow: hidden;
+    /* scroll-behavior: smooth; */
+    cursor: grab;
 }
 
 .details .container .product div img {
-    max-width: calc(100% / 4);
+    max-width: 23%;
     margin-top: 5px;
     cursor: pointer;
 }
 
 .details .container .product div img:not(:last-of-type) {
-    padding-right: 5px;
+    margin-right: 5px;
 }
 
 .details .container .product-details {
