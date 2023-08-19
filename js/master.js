@@ -19,36 +19,100 @@ document.addEventListener("click", (e) => {
 mainImg = document.querySelector(".details .product>img");
 rowImages = document.querySelectorAll(".details .product>div img");
 
-rowImages.forEach(element => {
-element.addEventListener("click",(event)=>{
+rowImages.forEach((element) => {
+  element.addEventListener("click", (event) => {
     console.log(event.target.src);
     // mainImg.src=event.target.src;
-    [mainImg.src,event.target.src]=[event.target.src,mainImg.src]
-})    
+    [mainImg.src, event.target.src] = [event.target.src, mainImg.src];
+  });
 });
-
-
 
 // ***************************
 
+productBoxs = document.querySelectorAll(".product-box");
+
+productBoxs.forEach((element) => {
+  element.addEventListener("click", (event) => {
+    window.localStorage.setItem("img", event.currentTarget.children[0].src);
+    window.location.href = "single.html";
+  });
+});
+
+var cartButton = document.querySelectorAll("td button");
+
+cartButton.forEach((element) => {
+  element.onclick = (e) => {
+    element.parentElement.parentElement.remove();
+  };
+});
 
 productBoxs = document.querySelectorAll(".product-box");
 
+productBoxs.forEach((element) => {
+  element.addEventListener("click", (event) => {
+    window.localStorage.setItem("img", event.currentTarget.children[0].src);
+    window.location.href = "single.html";
+  });
+});
 
-productBoxs.forEach((element)=>{
-   
-    element.addEventListener("click",(event)=>{  
-        window.localStorage.setItem("img",event.currentTarget.children[0].src)
-        window.location.href="single.html"
-        
-    })
-})
+var cartButton = document.querySelectorAll("td button");
 
+cartButton.forEach((element) => {
+  element.onclick = (e) => {
+    element.parentElement.parentElement.remove();
+  };
+});
 
-var cartButton=document.querySelectorAll("td button");
+const scrolling = document.querySelector(".scrollable");
+// console.log(scrolling);
+let isDown = false;
+let startX;
+let scrolledLeft;
 
-cartButton.forEach((element)=>{
-    element.onclick=(e)=>{
-        element.parentElement.parentElement.remove()
-    }
-})
+scrolling.addEventListener("mouseleave", (e) => {
+  isDown = false;
+});
+scrolling.addEventListener("mouseup", (e) => {
+  isDown = false;
+});
+
+scrolling.addEventListener("mousedown", (e) => {
+  isDown = true;
+  startX = e.pageX - scrolling.offsetLeft;
+  // console.log(startX)
+  scrolledLeft = scrolling.scrollLeft;
+  // console.log(scrolledLeft)
+});
+scrolling.addEventListener("mousemove", (e) => {
+  if (!isDown) return;
+  e.preventDefault();
+  let x = e.pageX - scrolling.offsetLeft;
+  // console.log(x);
+  let pas = x - startX;
+  scrolling.scrollLeft = scrolledLeft - pas;
+});
+
+// ****************************************
+let isDragging;
+
+scrolling.addEventListener("touchstart", (e) => {
+  isDragging = true;
+
+  startX = e.touches[0].pageX - scrolling.offsetLeft;
+  // console.log(startX)
+  scrolledLeft = scrolling.scrollLeft;
+});
+
+scrolling.addEventListener("touchmove", (e) => {
+  if (!isDragging) return;
+  e.preventDefault();
+  let x = e.touches[0].pageX - scrolling.offsetLeft;
+  // console.log(x)
+  let pas = x - startX;
+  // console.log(pas)
+  scrolling.scrollLeft = scrolledLeft - pas;
+});
+
+scrolling.addEventListener("touchend", () => {
+  isDragging = false;
+});
