@@ -35,13 +35,18 @@
         <div class="container">
             <div class="product">
                 <img src="img/products/f1.jpg" class="main-image" alt="main">
-               
-                <div class="scrollable"><img src="img/products/f5.jpg" class="main-image" alt="main"><img src="img/products/f2.jpg"
-                        class="main-image" alt="main"><img src="img/products/f3.jpg" class="main-image" alt="main"><img
-                        src="img/products/f4.jpg" class="main-image" alt="main">
-                        <img src="img/products/f7.jpg" class="main-image" alt="main">
-                        <img src="img/products/f8.jpg" class="main-image" alt="main">
-                        <img src="img/products/f6.jpg" class="main-image" alt="main"></div>
+
+                <div class="scrollable">
+                    <img src="img/products/f5.jpg" class="main-image" alt="main">
+                    <img src="img/products/f2.jpg" class="main-image" alt="main">
+                    <img src="img/products/f3.jpg" class="main-image" alt="main">
+                    <img src="img/products/f4.jpg" class="main-image" alt="main">
+                    <img src="img/products/f7.jpg" class="main-image" alt="main">
+                    <img src="img/products/f8.jpg" class="main-image" alt="main">
+                    <img src="img/products/f6.jpg" class="main-image" alt="main">
+                    <img src="img/products/f5.jpg" class="main-image" alt="main">
+                    <img src="img/products/f5.jpg" class="main-image" alt="main">
+                </div>
             </div>
             <div class="product-details">
                 <div class="type">Home/T-Shirt</div>
@@ -190,10 +195,75 @@
         <i class="fa-regular fa-copyright"></i> Tech2 etc
     </div>
     <script>
-        document.querySelector(".main-image").src = window.localStorage.getItem("img")
+        document.querySelector(".main-image").src = window.localStorage.getItem("img");
+
+        const scrolling = document.querySelector(".scrollable");
+        // console.log(scrolling);
+        let isDown = false;
+        let startX;
+        let scrolledLeft;
+
+        scrolling.addEventListener("mouseleave", (e) => {
+            isDown = false;
+        });
+        scrolling.addEventListener("mouseup", (e) => {
+            isDown = false;
+        });
+
+        scrolling.addEventListener("mousedown", (e) => {
+            isDown = true;
+            startX = e.pageX - scrolling.offsetLeft;
+            // console.log(startX)
+            scrolledLeft = scrolling.scrollLeft;
+            // console.log(scrolledLeft)
+        });
+        scrolling.addEventListener("mousemove", (e) => {
+            if (!isDown) return;
+            e.preventDefault();
+            let x = e.pageX - scrolling.offsetLeft;
+            // console.log(x);
+            let pas = x - startX;
+            scrolling.scrollLeft = scrolledLeft - pas;
+        });
+
+        let isDragging;
+
+        scrolling.addEventListener("touchstart", (e) => {
+            isDragging = true;
+
+            startX = e.touches[0].pageX - scrolling.offsetLeft;
+            // console.log(startX)
+            scrolledLeft = scrolling.scrollLeft;
+        });
+
+        scrolling.addEventListener("touchmove", (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            let x = e.touches[0].pageX - scrolling.offsetLeft;
+            // console.log(x)
+            let pas = x - startX;
+            // console.log(pas)
+            scrolling.scrollLeft = scrolledLeft - pas;
+        });
+
+        scrolling.addEventListener("touchend", () => {
+            isDragging = false;
+        });
+
+        scrolling.addEventListener("wheel", (e) => {
+            // Adjust the scroll behavior based on the wheel event
+
+            scrolling.scrollLeft += e.deltaX;
+            // console.log(e)
+            // console.log(typeof e.deltaX)
+            // console.log(scrolledLeft)
+            // console.log(scrolling.scrollLeft)
+            e.preventDefault(); // Prevent default scroll behavior
+        });
+
     </script>
     <script src="js/master.js"></script>
-    
+
 </body>
 
 </html>

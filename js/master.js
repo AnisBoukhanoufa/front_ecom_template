@@ -62,57 +62,44 @@ cartButton.forEach((element) => {
     element.parentElement.parentElement.remove();
   };
 });
+// **************************************
 
-const scrolling = document.querySelector(".scrollable");
-// console.log(scrolling);
-let isDown = false;
-let startX;
-let scrolledLeft;
-
-scrolling.addEventListener("mouseleave", (e) => {
-  isDown = false;
-});
-scrolling.addEventListener("mouseup", (e) => {
-  isDown = false;
-});
-
-scrolling.addEventListener("mousedown", (e) => {
-  isDown = true;
-  startX = e.pageX - scrolling.offsetLeft;
-  // console.log(startX)
-  scrolledLeft = scrolling.scrollLeft;
-  // console.log(scrolledLeft)
-});
-scrolling.addEventListener("mousemove", (e) => {
-  if (!isDown) return;
-  e.preventDefault();
-  let x = e.pageX - scrolling.offsetLeft;
-  // console.log(x);
-  let pas = x - startX;
-  scrolling.scrollLeft = scrolledLeft - pas;
-});
 
 // ****************************************
-let isDragging;
 
-scrolling.addEventListener("touchstart", (e) => {
-  isDragging = true;
+// ************************
+let images = [
+  "img/products/f1.jpg",
+  "img/products/f2.jpg",
+  "img/products/f4.jpg",
+  "img/products/f3.jpg",
+];
+let currentIndex = 0;
+let productBox = document.querySelectorAll(".product-box");
+// images[0]= e.children[0].src;
+let intervalId = null;
 
-  startX = e.touches[0].pageX - scrolling.offsetLeft;
-  // console.log(startX)
-  scrolledLeft = scrolling.scrollLeft;
+productBox.forEach((element) => {
+  element.onmouseover = (eventMouse) => {
+    var theOne = eventMouse.currentTarget.children[0];
+    console.log(eventMouse.currentTarget.children[0]);
+    images[0] = eventMouse.currentTarget.children[0].src;
+    let originalImage = eventMouse.currentTarget.children[0].src;
+    intervalId = setInterval(() => {
+      changeImage(theOne);
+    }, 1000);
+  };
+
+  element.onmouseout = (e) => {
+    clearInterval(intervalId);
+    resetImage(e.currentTarget.children[0]);
+  };
 });
 
-scrolling.addEventListener("touchmove", (e) => {
-  if (!isDragging) return;
-  e.preventDefault();
-  let x = e.touches[0].pageX - scrolling.offsetLeft;
-  // console.log(x)
-  let pas = x - startX;
-  // console.log(pas)
-  scrolling.scrollLeft = scrolledLeft - pas;
-});
-
-scrolling.addEventListener("touchend", () => {
-  isDragging = false;
-});
+function changeImage(boxx) {
+  currentIndex = (currentIndex + 1) % images.length;
+  boxx.src = images[currentIndex];
+}
+function resetImage(boxx) {
+  boxx.src = images[0]; // Reset to the first image
+}
